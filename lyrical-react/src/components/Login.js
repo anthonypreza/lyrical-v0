@@ -1,6 +1,6 @@
 import React from "react";
 import { Redirect } from "react-router-dom";
-import { Container, Button } from "reactstrap";
+import { Container, Button, Spinner } from "reactstrap";
 import { config } from "../spotify";
 
 const axios = require("axios");
@@ -9,7 +9,8 @@ const AUTH_BASE = "https://accounts.spotify.com/authorize";
 const CLIENT_ID = config.CLIENT_ID;
 const BASE_URL = "https://api.spotify.com/v1";
 const REDIRECT_URI = "http://localhost:3000";
-const SCOPES = "user-top-read user-read-private user-read-email";
+const SCOPES =
+  "user-modify-playback-state user-read-currently-playing user-read-playback-state user-read-private user-read-email user-library-modify user-library-read user-read-recently-played user-top-read playlist-read-collaborative playlist-read-private playlist-modify-private playlist-modify-public";
 const PARAMS = {
   client_id: CLIENT_ID,
   response_type: "token",
@@ -26,8 +27,7 @@ const encodeParams = p =>
     .join("&");
 
 // Get the hash of the url
-
-const hash = window.location.hash
+let hash = window.location.hash
   .substring(1)
   .split("&")
   .reduce(function(initial, item) {
@@ -37,21 +37,30 @@ const hash = window.location.hash
     }
     return initial;
   }, {});
-
 window.location.hash = "";
 
 export default class Login extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      loading: true,
       redirect: false
     };
   }
 
   componentDidMount() {
     let _token = hash.access_token;
+    hash = {};
     if (_token) {
+      localStorage.setItem("token", _token);
       this.getCurrentUser(_token);
+    } else if (localStorage.getItem("token")) {
+      _token = localStorage.getItem("token");
+      this.getCurrentUser(_token);
+    } else {
+      this.setState({
+        loading: false
+      });
     }
   }
 
@@ -64,6 +73,7 @@ export default class Login extends React.Component {
         if (res) {
           this.props.setCurrentUser(res.data, _token);
           this.setState({
+            loading: false,
             redirect: true
           });
         } else {
@@ -74,11 +84,19 @@ export default class Login extends React.Component {
 
   render() {
     const authURI = AUTH_BASE + "?" + encodeParams(PARAMS);
-    const { redirect } = this.state;
+    const { loading, redirect } = this.state;
+    if (loading) {
+      return (
+        <Container style={{ marginTop: 30 }}>
+          <Spinner />
+        </Container>
+      );
+    }
     return redirect ? (
       <Redirect to="/" />
     ) : (
-      <Container
+      <div
+        className="main"
         style={{
           display: "flex",
           justifyContent: "center",
@@ -107,7 +125,20 @@ export default class Login extends React.Component {
             </Button>
           </p>
         </main>
-      </Container>
+        <footer
+          class="footer"
+          style={{ position: "fixed", bottom: 0, margin: "auto" }}
+        >
+          <div class="container">
+            <span class="text-muted">
+              Made with ❤️ in LA by{" "}
+              <a href="https://github.com/anthonypreza" target="_other">
+                ap.
+              </a>
+            </span>
+          </div>
+        </footer>
+      </div>
     );
   }
 }

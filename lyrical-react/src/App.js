@@ -1,6 +1,5 @@
 import React from "react";
 import Routes from "./routes";
-import { Spinner } from "reactstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 const axios = require("axios");
@@ -17,7 +16,6 @@ class App extends React.Component {
     this.state = {
       authenticated: false,
       currentUser: null,
-      loading: true,
       token: null,
       topTracks: null
     };
@@ -33,7 +31,6 @@ class App extends React.Component {
     } else {
       this.setState({
         authenticated: false,
-        loading: false,
         currentUser: null
       });
     }
@@ -45,7 +42,6 @@ class App extends React.Component {
         {
           currentUser: user,
           authenticated: true,
-          loading: false,
           token: token
         },
         () => {
@@ -66,17 +62,24 @@ class App extends React.Component {
       this.setState({
         currentUser: null,
         authenticated: false,
-        loading: false,
         token: null
       });
     }
   };
 
+  logout = e => {
+    e.preventDefault();
+    console.log("Logging out...");
+    localStorage.removeItem("token");
+    this.setState({
+      authenticated: false,
+      currentUser: null,
+      token: null
+    });
+  };
+
   render() {
-    const { authenticated, currentUser, topTracks, loading } = this.state;
-    if (loading) {
-      return <Spinner />;
-    }
+    const { authenticated, currentUser, topTracks } = this.state;
     return (
       <div className="App">
         <Routes
@@ -84,6 +87,7 @@ class App extends React.Component {
           currentUser={currentUser}
           setCurrentUser={this.setCurrentUser}
           topTracks={topTracks}
+          logout={this.logout}
         />
       </div>
     );

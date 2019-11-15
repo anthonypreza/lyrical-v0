@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import styled from "styled-components";
 import { Jumbotron, Button } from "reactstrap";
 import Table from "./Table";
@@ -19,7 +20,7 @@ document.addEventListener(
   true
 );
 
-const Home = ({ currentUser, topTracks }) => {
+const Home = ({ currentUser, topTracks, logout }) => {
   const Styles = styled.div`
     padding: 1rem;
     table {
@@ -84,25 +85,32 @@ const Home = ({ currentUser, topTracks }) => {
       }
     },
     {
-      Header: "Lyrics",
+      Header: "Genius",
       Cell: ({ row }) => {
-        return <a>View Lyrics</a>;
+        return row ? (
+          <Link to={`/genius/${row.original.id}`}>View Lyrics</Link>
+        ) : null;
       }
     }
   ];
+
   return (
-    <div className="main">
-      <Jumbotron>
-        <h1>
-          Hello {currentUser ? currentUser.display_name.split(" ")[0] : null}
-        </h1>
-      </Jumbotron>
+    <Jumbotron style={{ backgroundColor: "#fff" }}>
+      <h1>
+        Hey, {currentUser ? currentUser.display_name.split(" ")[0] : null}!{" "}
+      </h1>
+      <p className="lead">How about some music?</p>
+      <p>
+        Here are your top 50 streamed songs on Spotify. You can click the
+        columns to sort your tracks, directly preview your tracks, or view them
+        on Spotify. Lyrics are also available!
+      </p>
       {topTracks ? (
         <Styles>
           <Table data={topTracks.items} columns={columns} />
         </Styles>
       ) : null}
-    </div>
+    </Jumbotron>
   );
 };
 
