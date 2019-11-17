@@ -1,9 +1,3 @@
-"""
-Juturna version 0.0.0
-Server code implemented with python Flask
-Created by Anthony Preza https://github.com/anthonypreza
-"""
-
 import argparse
 import logging
 import os
@@ -54,48 +48,9 @@ def lyrics():
         return "Did you mean to make a POST request to this endpoint?"
 
 
-# @APP.route(API_ROOT + 'me/recently_played')
-# @login_required
-# def recently_played_tracks():
-#     spotify_user = SPOTIFY_USERS[current_user.id]
-#     recently_played = spotify_user.recently_played()
-#     res = [
-#         {
-#             'context': parse_context(r['context']),
-#             'played_at': r['played_at'],
-#             'track': parse_track(r['track'])
-#         }
-#         for r in recently_played
-#     ]
-#     return jsonify(res)
-
-
-# @APP.route(API_ROOT + 'me/recently_played/features')
-# @login_required
-# def recently_played_track_features():
-#     spotify_user = SPOTIFY_USERS[current_user.id]
-#     recently_played = spotify_user.recently_played()
-#     tracks = [r['track'] for r in recently_played]
-#     features = [t.audio_features() for t in tracks]
-#     return jsonify(features)
-
-
-# @APP.route(API_ROOT + 'me/top_artists')
-# @login_required
-# def top_artists():
-#     if request.data and 'time_range' in request.data:
-#         time_range = request.data['time_range']
-#     else:
-#         time_range = None
-#     spotify_user = SPOTIFY_USERS[current_user.id]
-#     artists = spotify_user.top_artists(limit=50, time_range=time_range)
-#     res = [parse_artist(a) for a in artists]
-#     return jsonify(res)
-
-
-# @APP.errorhandler(401)
-# def page_not_found():
-#     return Response('Not found')
+@APP.errorhandler(401)
+def page_not_found():
+    return Response('Not found')
 
 
 def parse_args(args):
