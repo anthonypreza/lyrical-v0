@@ -69,19 +69,18 @@ export default class Login extends React.Component {
       .get(BASE_URL + "/me", {
         headers: AUTH_HEADERS(_token)
       })
-      .then((res, err) => {
-        if (res) {
-          this.props.setCurrentUser(res.data, _token);
-          this.setState({
-            loading: false,
-            redirect: true
-          });
-        } else {
-          console.log(err);
-          this.setState({
-            loading: false
-          });
-        }
+      .then(res => {
+        this.props.setCurrentUser(res.data, _token);
+        this.setState({
+          loading: false,
+          redirect: true
+        });
+      })
+      .catch(err => {
+        console.error(err);
+        this.setState({
+          loading: false
+        });
       });
   }
 

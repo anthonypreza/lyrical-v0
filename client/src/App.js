@@ -5,7 +5,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 const axios = require("axios");
 
 const BASE_URL = "https://api.spotify.com/v1";
-// const TOKEN_URL = "https://accounts.spotify.com/api/token";
 const AUTH_HEADERS = token => {
   return { Authorization: `Bearer ${token}` };
 };
