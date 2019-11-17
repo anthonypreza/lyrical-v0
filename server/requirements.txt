@@ -2,3 +2,4 @@ flask
 nltk
 requests
 bs4
+flask-cors

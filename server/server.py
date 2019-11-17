@@ -1,15 +1,11 @@
 import argparse
 import logging
-import os
 import sys
-import random
-import string
 import json
 
-import flask
-from genius import get_song_info, get_lyrics
+from genius import get_song_info, get_lyrics, get_lyrics_free_tier
 from flask import Flask, Response, jsonify, request
-from flask_cors import CORS, cross_origin
+from flask_cors import CORS
 
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(levelname)s - %(name)s - %(message)s')
@@ -33,7 +29,11 @@ cors = CORS(APP, resources={r"/*": {"origins": "*"}},
             supports_credentials=True)
 
 
-@cross_origin(origin='localhost', headers=['Content- Type'])
+@APP.route("/", methods=["GET"])
+def root():
+    return "Web root for Lyrical API"
+
+
 @APP.route(API_ROOT + 'get_lyrics', methods=["GET", "POST"])
 def lyrics():
     if request.method == 'POST' and request.data:
@@ -41,8 +41,11 @@ def lyrics():
         track_name = data['track_name']
         artists = data['artists']
         song_info = get_song_info(track_name, artists)
-        lyrics = get_lyrics(song_info)
-        res = jsonify(lyrics)
+        try:
+            lyrics = get_lyrics(song_info)
+            res = jsonify(lyrics)
+        except:
+            res = get_lyrics_free_tier(song_info)
         return res
     else:
         return "Did you mean to make a POST request to this endpoint?"
