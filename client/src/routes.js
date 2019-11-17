@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Route, Redirect } from "react-router-dom";
+import { HashRouter, Route, Redirect } from "react-router-dom";
 import Login from "./components/Login";
 import Home from "./components/Home";
 import InfoPage from "./components/InfoPage";
@@ -19,10 +19,14 @@ function AuthenticatedRoute({
           <div className="main">
             <Navigation logout={logout}> </Navigation>
             <Component {...routeProps} {...rest} />
-            <footer class="footer">
-              <div class="container">
-                <span class="text-muted">
-                  Made with ❤️ in LA by{" "}
+            <footer className="footer">
+              <div className="container">
+                <span className="text-muted">
+                  Made with{" "}
+                  <span role="img" aria-label="love">
+                    ❤️
+                  </span>{" "}
+                  in LA by{" "}
                   <a href="https://github.com/anthonypreza" target="_other">
                     ap.
                   </a>
@@ -47,7 +51,7 @@ export default ({
   topTracks,
   logout
 }) => (
-  <BrowserRouter>
+  <HashRouter>
     <AuthenticatedRoute
       exact
       path="/"
@@ -83,5 +87,5 @@ export default ({
         />
       )}
     />
-  </BrowserRouter>
+  </HashRouter>
 );

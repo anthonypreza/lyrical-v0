@@ -7,12 +7,9 @@ import Table from "./Table";
 document.addEventListener(
   "play",
   function(e) {
-    // get all <audio> tag elements in the page.
     var allAudios = document.getElementsByTagName("audio");
-    // Iterate through all players and pause them, except for
-    // the one who fired the "play" event ("target")
     for (var i = 0; i < allAudios.length; i++) {
-      if (allAudios[i] != e.target) {
+      if (allAudios[i] !== e.target) {
         allAudios[i].pause();
       }
     }
@@ -20,7 +17,7 @@ document.addEventListener(
   true
 );
 
-const Home = ({ currentUser, topTracks, logout }) => {
+const Home = ({ currentUser, topTracks }) => {
   const Styles = styled.div`
     padding: 1rem;
     table {

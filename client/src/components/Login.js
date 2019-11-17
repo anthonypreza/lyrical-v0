@@ -78,6 +78,9 @@ export default class Login extends React.Component {
           });
         } else {
           console.log(err);
+          this.setState({
+            loading: false
+          });
         }
       });
   }
@@ -126,12 +129,16 @@ export default class Login extends React.Component {
           </p>
         </main>
         <footer
-          class="footer"
+          className="footer"
           style={{ position: "fixed", bottom: 0, margin: "auto" }}
         >
-          <div class="container">
-            <span class="text-muted">
-              Made with ❤️ in LA by{" "}
+          <div className="container">
+            <span className="text-muted">
+              Made with{" "}
+              <span role="img" aria-label="love">
+                ❤️
+              </span>{" "}
+              in LA by{" "}
               <a href="https://github.com/anthonypreza" target="_other">
                 ap.
               </a>

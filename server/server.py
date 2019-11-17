@@ -32,8 +32,7 @@ class App(Flask):
 
 
 APP = App(__name__)
-APP.config['SECRET_KEY'] = 'the quick brown fox jumps over the lazy   dog'
-APP.config['CORS_HEADERS'] = 'Content-Type'
+APP.config.from_envvar('FLASK_CONFIG')
 API_ROOT = '/api/v0/'
 
 cors = CORS(APP, resources={r"/*": {"origins": "*"}},
