@@ -1,0 +1,6 @@
+[submodule "lyrical-react"]
+	path = lyrical-react
+	url = https://github.com/anthonypreza/lyrical-react
+[submodule "lyrical-server"]
+	path = lyrical-server
+	url = https://github.com/anthonypreza/lyrical-server.git
